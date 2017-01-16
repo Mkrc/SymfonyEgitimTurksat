@@ -1,0 +1,11 @@
+blog_homepage:
+    path:     /
+    defaults: { _controller: BlogBundle:Blog:index }
+
+blog_detail:
+    path:     /detail/{Id}
+    defaults: { _controller: BlogBundle:Blog:detail }
+
+blog_create:
+    path: /create
+    defaults: { _controller: BlogBundle:Blog:create }
