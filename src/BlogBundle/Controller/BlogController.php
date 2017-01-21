@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
+use BlogBundle\Form\BlogPostType;
 
 class BlogController extends Controller
 {
@@ -88,7 +89,26 @@ class BlogController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $render['formData'] = $form->getData();
         }
-        
+
         return $this->render('BlogBundle:Default:form.html.twig', $render);
+    }
+
+    public function form2Action(Request $request)
+    {
+        $blogPost = new BlogPost();
+        $form = $this->createForm(BlogPostType::class, $blogPost);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            dump($blogPost);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($blogPost);
+            $em->flush();
+        }
+
+        return $this->render('BlogBundle:Default:form2.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 }

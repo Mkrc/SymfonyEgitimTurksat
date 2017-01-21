@@ -1,0 +1,10 @@
+{% extends "BlogBundle:Default:layout.html.twig" %}
+
+{% block title %}Form2{% endblock %}
+
+{% block content %}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+{% endblock %}
