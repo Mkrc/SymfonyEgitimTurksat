@@ -1,0 +1,24 @@
+{% extends "BlogBundle:Default:layout.html.twig" %}
+
+{% block title %}Form{% endblock %}
+
+{% block content %}
+
+    <div class="input-field col s12">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+
+    {% if formData is defined %}
+    <br > Title: {{ formData['title'] }}
+    {% endif %}
+
+<script type="text/javascript">
+    $("document").ready(function () {
+        $("select").material_select();
+    });
+</script>
+
+{% endblock %}

@@ -9,3 +9,7 @@ blog_detail:
 blog_create:
     path: /create
     defaults: { _controller: BlogBundle:Blog:create }
+
+blog_form:
+    path: /form
+    defaults: { _controller: BlogBundle:Blog:form }

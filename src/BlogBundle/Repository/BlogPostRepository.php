@@ -14,4 +14,8 @@ class BlogPostRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->findBy(array('title' => "Örnek Post"));
     }
+
+    public function getAllPosts() {
+        return $this->findAll();
+    }
 }

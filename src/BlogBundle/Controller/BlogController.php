@@ -4,8 +4,14 @@ namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\BlogPost;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use BlogBundle\Entity\Category;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends Controller
 {
@@ -19,7 +25,11 @@ class BlogController extends Controller
         $post = $this->getDoctrine()
             ->getRepository('BlogBundle:BlogPost')->find($Id);
 
-        return $this->render('BlogBundle:Default:blog_detail.html.twig', array('post' => $post));
+        $posts = $this->getDoctrine()
+            ->getRepository('BlogBundle:BlogPost')->getAllPosts();
+
+        return $this->render('BlogBundle:Default:blog_detail.html.twig',
+            array('post' => $post, 'other_posts' => $posts));
     }
 
     public function createAction()
@@ -51,5 +61,34 @@ class BlogController extends Controller
         dump($post);
 
         return new JsonResponse(array('status' => 'ok'));
+    }
+
+    public function formAction(Request $request) {
+
+        $form = $this->createFormBuilder(null, array('csrf_protection' => false))
+            ->add('title', TextType::class, array('label' => 'Title'))
+            ->add('content', TextareaType::class)
+            ->add('status', ChoiceType::class, array(
+                'choices'  => array(
+                    'Passive' => 0,
+                    'Active' => 1,
+                    'Canceled' => -1,
+                ),
+                'required' => true,
+            ))
+            ->add('save', SubmitType::class, array('label' => 'Create Post'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        $render = array(
+            'form' => $form->createView(),
+        );
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $render['formData'] = $form->getData();
+        }
+        
+        return $this->render('BlogBundle:Default:form.html.twig', $render);
     }
 }

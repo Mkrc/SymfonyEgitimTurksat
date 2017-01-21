@@ -1,6 +1,10 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    {% stylesheets '@BlogBundle/Resources/public/css/*' filter="uglifycss" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 </head>
 <body>
 <div>Header</div>
@@ -8,5 +12,9 @@
     {% block content %}{% endblock %}
 </div>
 <div>Footer</div>
+{% javascripts '@BlogBundle/Resources/public/js/*' filter='uglifyjs2' %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
 </body>
 </html>
